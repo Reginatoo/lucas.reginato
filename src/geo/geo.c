@@ -3,7 +3,7 @@
 #include <string.h>
 #include "quadra.h"
 
-extern void inserirNoHash(void *hash, char *chave, void *dado);
+extern void insereRegistro(void* T, const char* ch, void* r);
 
 void lerArquivoGeo(char *path_geo, void *hash_quadras) {
     FILE *f = fopen(path_geo, "r");
@@ -25,7 +25,10 @@ void lerArquivoGeo(char *path_geo, void *hash_quadras) {
         else if (strcmp(comando, "q") == 0) {
             sscanf(linha, "%*s %s %lf %lf %lf %lf", cep, &x, &y, &w, &h);
             Quadra q = criaQuadra(cep, x, y, w, h, cfill, cstrk, sw);
-            inserirNoHash(hash_quadras, cep, q);
+            
+            insereRegistro(hash_quadras, cep, q);
+            
+            destroiQuadra(q);
         }
     }
 
