@@ -79,4 +79,14 @@ char *getQuadraStroke(Quadra q);
  */
 double getQuadraSw(Quadra q);
 
+/**
+ * @brief calcula as coordenadas exatas de um endereco numa quadra
+ * @param q ponteiro para a quadra
+ * @param face face da quadra 
+ * @param num distancia a partir da projecao da ancora
+ * @param out_x ponteiro onde sera guardado o resultado de x
+ * @param out_y ponteiro onde sera guardado o resultado de y
+ */
+void getQuadraEnderecoCoordenadas(Quadra q, char *face, int num, double *out_x, double *out_y);
+
 #endif

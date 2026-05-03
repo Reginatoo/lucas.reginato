@@ -61,3 +61,20 @@ char *getQuadraStroke(Quadra q) {
 double getQuadraSw(Quadra q) {
     return ((struct quadra *)q)->sw;
 }
+void getQuadraEnderecoCoordenadas(Quadra q, char *face, int num, double *out_x, double *out_y) {
+    struct quadra *qd = (struct quadra *) q;
+    
+    if (strcmp(face, "S") == 0) {
+        *out_x = qd->x + num;
+        *out_y = qd->y;
+    } else if (strcmp(face, "N") == 0) {
+        *out_x = qd->x + num;
+        *out_y = qd->y + qd->h;
+    } else if (strcmp(face, "L") == 0) {
+        *out_x = qd->x;
+        *out_y = qd->y + num;
+    } else if (strcmp(face, "O") == 0) {
+        *out_x = qd->x + qd->w;
+        *out_y = qd->y + num;
+    }
+}
