@@ -6,6 +6,7 @@
 #include "pm.h"
 #include "qry.h"
 #include "hash_extensivel.h"
+#include "svg.h" 
 
 void extraiNomeBase(char *caminho, char *nomeBase) {
     char temp[256];
@@ -76,7 +77,7 @@ int main(int argc, char *argv[]) {
 
     FILE *f_svg_base = fopen(path_svg_geo, "w");
     if (f_svg_base) {
-        fprintf(f_svg_base, "<svg xmlns=\"http://www.w3.org/2000/svg\">\n");
+        iniciaSvg(f_svg_base); 
         fclose(f_svg_base);
     }
     
@@ -103,14 +104,14 @@ int main(int argc, char *argv[]) {
         
         FILE *f_qry_svg = fopen(path_svg_qry, "a");
         if (f_qry_svg) {
-            fprintf(f_qry_svg, "</svg>\n");
+            fechaSvg(f_qry_svg); 
             fclose(f_qry_svg);
         }
     }
 
     FILE *f_geo_close = fopen(path_svg_geo, "a");
     if (f_geo_close) {
-        fprintf(f_geo_close, "</svg>\n");
+        fechaSvg(f_geo_close); 
         fclose(f_geo_close);
     }
 
