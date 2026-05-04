@@ -72,9 +72,9 @@ int main(int argc, char *argv[]) {
     sprintf(nome_hf_quadras, "%s_quadras", path_base_saida);
     sprintf(nome_hf_pessoas, "%s_pessoas", path_base_saida);
 
-    void *hash_quadras = criaTabela(nome_hf_quadras, 10);
-    void *hash_pessoas = criaTabela(nome_hf_pessoas, 10);
-
+    void *hash_quadras = criaTabela(nome_hf_quadras, 10, 512);
+    void *hash_pessoas = criaTabela(nome_hf_pessoas, 10, 512);
+    
     FILE *f_svg_base = fopen(path_svg_geo, "w");
     if (f_svg_base) {
         iniciaSvg(f_svg_base); 

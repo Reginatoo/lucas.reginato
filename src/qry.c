@@ -5,11 +5,7 @@
 #include "quadra.h"
 #include "pessoa.h"
 #include "svg.h"
-
-extern void insereRegistro(void* T, const char* ch, void* r);
-extern void* buscaRegistro(void* T, const char* ch);
-extern int removeChave(void* T, const char* ch);
-extern void percorreTabela(void* T, void (*cb)(void*, void*), void *aux);
+#include "hash_extensivel.h"
 
 struct censo_aux {
     int hab, mor, st;
@@ -25,7 +21,7 @@ struct pq_aux {
 
 struct rq_aux {
     char cep[50];
-    char cpfs[500][20];
+    char cpfs[1000][20]; 
     int qtd;
 };
 
@@ -34,7 +30,7 @@ void cb_censo(void *dados, void *aux) {
     struct censo_aux *c = (struct censo_aux *)aux;
     
     c->hab++;
-    bool is_masc = (strcmp(getPessoaSexo(p), "M") == 0);
+    int is_masc = (strcmp(getPessoaSexo(p), "M") == 0);
     
     if (is_masc) c->hom++;
     else c->mul++;
@@ -69,7 +65,7 @@ void cb_rq(void *dados, void *aux) {
     struct rq_aux *rq = (struct rq_aux *)aux;
     
     if (isPessoaMorador(p) && strcmp(getPessoaCep(p), rq->cep) == 0) {
-        if (rq->qtd < 500) {
+        if (rq->qtd < 1000) {
             strcpy(rq->cpfs[rq->qtd], getPessoaCpf(p));
             rq->qtd++;
         }
@@ -78,7 +74,7 @@ void cb_rq(void *dados, void *aux) {
 
 void lerArquivoQry(char *path_qry, char *path_txt, char *path_svg, void *hash_quadras, void *hash_pessoas) {
     FILE *f_qry = fopen(path_qry, "r");
-    FILE *f_txt = fopen(path_txt, "w");
+    FILE *f_txt = fopen(path_txt, "a");
     FILE *f_svg = fopen(path_svg, "a");
 
     if (!f_qry || !f_txt || !f_svg) {
@@ -89,13 +85,12 @@ void lerArquivoQry(char *path_qry, char *path_txt, char *path_svg, void *hash_qu
     }
 
     char linha[256], comando[10];
-    char cep[50], cpf[20], nome[50], sobrenome[50], sexo[5], nasc[20], face[5], compl[50];
-    int num;
+    char cep[50], cpf[20];
 
     while (fgets(linha, sizeof(linha), f_qry)) {
-        sscanf(linha, "%s", comando);
+        if (sscanf(linha, "%s", comando) <= 0) continue;
 
-       if (strcmp(comando, "rq") == 0) {
+        if (strcmp(comando, "rq") == 0) {
             sscanf(linha, "%*s %s", cep);
             fprintf(f_txt, "Comando: %s", linha);
             
@@ -119,7 +114,7 @@ void lerArquivoQry(char *path_qry, char *path_txt, char *path_svg, void *hash_qu
                     }
                 }
                 
-                desenhaX(f_svg, getQuadraX(q), getQuadraY(q), "red");
+                desenhaX(f_svg, getQuadraX(q) + getQuadraW(q), getQuadraY(q) + getQuadraH(q), "red");
                 removeChave(hash_quadras, cep);
                 destroiQuadra(q);
             }
@@ -141,8 +136,8 @@ void lerArquivoQry(char *path_qry, char *path_txt, char *path_svg, void *hash_qu
                 sprintf(txt, "%d", aux.total);
                 desenhaTexto(f_svg, cx, cy, txt);
                 
-                sprintf(txt, "%d", aux.n); desenhaTexto(f_svg, cx, getQuadraY(q) + getQuadraH(q) - 2, txt);
-                sprintf(txt, "%d", aux.s); desenhaTexto(f_svg, cx, getQuadraY(q) + 5, txt);
+                sprintf(txt, "%d", aux.n); desenhaTexto(f_svg, cx, getQuadraY(q) + 5, txt);
+                sprintf(txt, "%d", aux.s); desenhaTexto(f_svg, cx, getQuadraY(q) + getQuadraH(q) - 2, txt);
                 sprintf(txt, "%d", aux.l); desenhaTexto(f_svg, getQuadraX(q) + 2, cy, txt);
                 sprintf(txt, "%d", aux.o); desenhaTexto(f_svg, getQuadraX(q) + getQuadraW(q) - 5, cy, txt);
                 
