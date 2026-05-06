@@ -7,6 +7,8 @@
 #include "qry.h"
 #include "hash_extensivel.h"
 #include "svg.h" 
+#include "quadra.h"
+#include "pessoa.h"
 
 void extraiNomeBase(char *caminho, char *nomeBase) {
     char temp[256];
@@ -53,7 +55,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    char path_geo[512] = "", path_pm[512] = "", path_qry[512] = "";
+    char path_geo[2048] = "", path_pm[2048] = "", path_qry[2048] = "";
     juntaCaminho(dir_e, arq_f, path_geo);
     if (arq_pm) juntaCaminho(dir_e, arq_pm, path_pm);
     if (arq_q) juntaCaminho(dir_e, arq_q, path_qry);
@@ -62,18 +64,18 @@ int main(int argc, char *argv[]) {
     extraiNomeBase(arq_f, base_geo);
     if (arq_q) extraiNomeBase(arq_q, base_qry);
 
-    char path_base_saida[512];
+    char path_base_saida[2048];
     juntaCaminho(dir_o, base_geo, path_base_saida);
 
-    char path_svg_geo[512];
-    sprintf(path_svg_geo, "%s.svg", path_base_saida);
+    char path_svg_geo[2048];
+    snprintf(path_svg_geo, sizeof(path_svg_geo), "%s.svg", path_base_saida);
 
-    char nome_hf_quadras[512], nome_hf_pessoas[512];
-    sprintf(nome_hf_quadras, "%s_quadras", path_base_saida);
-    sprintf(nome_hf_pessoas, "%s_pessoas", path_base_saida);
+    char nome_hf_quadras[2048], nome_hf_pessoas[2048];
+    snprintf(nome_hf_quadras, sizeof(nome_hf_quadras), "%s_quadras", path_base_saida);
+    snprintf(nome_hf_pessoas, sizeof(nome_hf_pessoas), "%s_pessoas", path_base_saida);
 
-    void *hash_quadras = criaTabela(nome_hf_quadras, 10, 512);
-    void *hash_pessoas = criaTabela(nome_hf_pessoas, 10, 512);
+    void *hash_quadras = criaTabela(nome_hf_quadras, 10, getTamanhoQuadra());
+    void *hash_pessoas = criaTabela(nome_hf_pessoas, 10, getTamanhoPessoa());
     
     FILE *f_svg_base = fopen(path_svg_geo, "w");
     if (f_svg_base) {
@@ -84,19 +86,19 @@ int main(int argc, char *argv[]) {
     lerArquivoGeo(path_geo, path_svg_geo, hash_quadras);
 
     if (arq_pm) {
-        lerArquivoPm(path_pm, hash_pessoas);
+        lerArquivoPm(path_pm, hash_pessoas, hash_quadras);
     }
 
     if (arq_q) {
-        char path_txt[512], path_svg_qry[512];
+        char path_txt[2048], path_svg_qry[2048];
         sprintf(path_txt, "%s/%s-%s.txt", dir_o, base_geo, base_qry);
         sprintf(path_svg_qry, "%s/%s-%s.svg", dir_o, base_geo, base_qry);
         
-        char comando_cp[1024];
+        char comando_cp[4096];
         #ifdef _WIN32
             sprintf(comando_cp, "copy \"%s\" \"%s\"", path_svg_geo, path_svg_qry);
         #else
-            sprintf(comando_cp, "cp \"%s\" \"%s\"", path_svg_geo, path_svg_qry);
+            snprintf(comando_cp, sizeof(comando_cp), "cp \"%s\" \"%s\"", path_svg_geo, path_svg_qry);
         #endif
         system(comando_cp);
 
@@ -115,9 +117,9 @@ int main(int argc, char *argv[]) {
         fclose(f_geo_close);
     }
 
-    char path_hfd_quadras[512], path_hfd_pessoas[512];
-    sprintf(path_hfd_quadras, "%s_quadras.hfd", path_base_saida);
-    sprintf(path_hfd_pessoas, "%s_pessoas.hfd", path_base_saida);
+    char path_hfd_quadras[2048], path_hfd_pessoas[2048];
+    snprintf(path_hfd_quadras, sizeof(path_hfd_quadras), "%s_quadras.hfd", path_base_saida);
+    snprintf(path_hfd_pessoas, sizeof(path_hfd_pessoas), "%s_pessoas.hfd", path_base_saida);
     
     imprimeTabela(hash_quadras, path_hfd_quadras);
     imprimeTabela(hash_pessoas, path_hfd_pessoas);

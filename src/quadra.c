@@ -11,7 +11,7 @@ struct quadra {
 };
 
 Quadra criaQuadra(char *cep, double x, double y, double w, double h, char *fill, char *stroke, double sw) {
-    struct quadra *q = malloc(sizeof(struct quadra));
+    struct quadra *q = calloc(1, sizeof(struct quadra));
     if (!q) return NULL;
 
     strncpy(q->cep, cep, 49); q->cep[49] = '\0';
@@ -75,4 +75,7 @@ void getQuadraEnderecoCoordenadas(Quadra q, char *face, int num, double *out_x, 
         *out_x = qd->x_ancora;
         *out_y = qd->y_ancora - num;
     }
+}
+size_t getTamanhoQuadra() {
+    return sizeof(struct quadra);
 }

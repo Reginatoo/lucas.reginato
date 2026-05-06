@@ -2,6 +2,7 @@
 #define PESSOA_H
 
 #include <stdbool.h>
+#include <stddef.h>
 
 /**
  * @brief tipo opaco que representa uma pessoa na cidade
@@ -110,5 +111,11 @@ int getPessoaNum(Pessoa p);
  * @return complemento ou null
  */
 char *getPessoaCompl(Pessoa p);
+
+/**
+ * @brief retorna o tamanho em bytes da struct interna da pessoa
+ * @return tamanho em bytes
+ */
+size_t getTamanhoPessoa();
 
 #endif

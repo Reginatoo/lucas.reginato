@@ -57,6 +57,32 @@ static void gravar_bucket(TabelaEspalhamento *T, int offset, const Bucket *b) {
     fflush(T->arquivo_dados);
 }
 
+void imprimeTabela(TabelaEspalhamento* T, const char* nome_arq_saida) {
+    FILE* f = fopen(nome_arq_saida, "w");
+    if (!f) return;
+
+    fprintf(f, "profundidade global: %d\n", T->profundidade_global);
+    
+    int tam_dir = 1 << T->profundidade_global;
+    for (int i = 0; i < tam_dir; i++) {
+        int offset = ler_offset_dir(T, i);
+        Bucket b;
+        ler_bucket(T, offset, &b);
+        
+        fprintf(f, "dir[%d] -> offset: %d | prof_local: %d | qtd: %d | chaves: [ ", 
+                i, offset, b.profundidade_local, b.qtd_registro);
+
+        for (int j = 0; j < T->cap_bucket; j++) {
+            if (b.registros[j].ativo) {
+                fprintf(f, "%s ", b.registros[j].chave);
+            }
+        }
+        fprintf(f, "]\n");
+    }
+    
+    fclose(f);
+}
+
 TabelaEspalhamento* criaTabela(const char* nome_arq, int n, int tam_reg) {
     TabelaEspalhamento* T = (TabelaEspalhamento*) malloc(sizeof(TabelaEspalhamento));
     char nome_hf[256], nome_hfc[256];

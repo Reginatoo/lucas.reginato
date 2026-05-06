@@ -12,7 +12,7 @@ struct pessoa {
 };
 
 Pessoa criaPessoa(char *cpf, char *nome, char *sobrenome, char *sexo, char *nasc) {
-    struct pessoa *p = malloc(sizeof(struct pessoa));
+   struct pessoa *p = calloc(1, sizeof(struct pessoa));
     
     if (!p) return NULL;
     
@@ -101,4 +101,7 @@ int getPessoaNum(Pessoa p) {
 
 char *getPessoaCompl(Pessoa p) {
     return ((struct pessoa *)p)->compl;
+}
+size_t getTamanhoPessoa() {
+    return sizeof(struct pessoa);
 }
