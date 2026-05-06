@@ -1,5 +1,6 @@
 #ifndef QUADRA_H
 #define QUADRA_H
+#include <stddef.h>
 
 typedef void *Quadra;
 
@@ -88,5 +89,11 @@ double getQuadraSw(Quadra q);
  * @param out_y ponteiro onde sera guardado o resultado de y
  */
 void getQuadraEnderecoCoordenadas(Quadra q, char *face, int num, double *out_x, double *out_y);
+
+/**
+ * @brief retorna o tamanho em bytes da struct interna da quadra
+ * @return tamanho em bytes
+ */
+size_t getTamanhoQuadra();
 
 #endif

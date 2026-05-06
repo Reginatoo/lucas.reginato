@@ -5,7 +5,7 @@
 #include "pessoa.h"
 #include "hash_extensivel.h"
 
-void lerArquivoPm(char *path_pm, void *hash_pessoas) {
+void lerArquivoPm(char *path_pm, void *hash_pessoas, void *hash_quadras) {
     FILE *f = fopen(path_pm, "r");
     if (!f) return;
 
