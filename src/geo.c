@@ -33,7 +33,7 @@ void lerArquivoGeo(char *path_geo, char *path_svg_base, void *hash_quadras) {
 
             double x_desenho = x - w;
             double y_desenho = y - h;
-            desenhaRetangulo(f_svg, x_desenho, y_desenho, w, h, cor_contorno, cor_preenchimento, espessura_borda);
+            desenhaRetangulo(f_svg, x_desenho, y_desenho, w, h, cor_preenchimento, cor_contorno, espessura_borda);
             desenhaTexto(f_svg, x_desenho + 2, y_desenho + 12, cep);
         }
         else if (strcmp(tipo, "cq") == 0) {

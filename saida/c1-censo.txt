@@ -48,3 +48,13 @@ Moradores Mulheres: 71 (40.80% dos moradores)
 Total Sem-tetos: 577
 Sem-tetos Homens: 291 (50.43% dos sem-tetos)
 Sem-tetos Mulheres: 286 (49.57% dos sem-tetos)
+Comando: censo
+Total Habitantes: 751
+Total Moradores: 174 (23.17% da populacao)
+Habitantes Homens: 394 (52.46%)
+Habitantes Mulheres: 357 (47.54%)
+Moradores Homens: 103 (59.20% dos moradores)
+Moradores Mulheres: 71 (40.80% dos moradores)
+Total Sem-tetos: 577
+Sem-tetos Homens: 291 (50.43% dos sem-tetos)
+Sem-tetos Mulheres: 286 (49.57% dos sem-tetos)
